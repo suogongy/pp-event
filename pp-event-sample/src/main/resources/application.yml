@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: pp-event-sample
+  profiles:
+    active: @active.profile@
+#server:
+#  servlet:
+#    context-path: /pp-event-sample
+eros:
+  football:
+    app:
+      id: 11927
+      name: pp-event
+mainstay:
+  application:
+    name: pp-event-sample
+    owners:
+      - name: rudy.yang
+        email: haiyuan1832@gmail.om
+  server:
+    pp-event-sample:
+      port: 9527

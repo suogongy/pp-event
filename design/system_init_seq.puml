@@ -1,0 +1,15 @@
+@startuml
+title 系统启动流程
+SpringApplication -> SpringApplication:run
+SpringApplication -> AnnotationEventListenerBeanPostProcessor:postProcessAfterInitialization
+opt hasEventHandlerMethod
+    AnnotationEventListenerBeanPostProcessor->AnnotationEventListenerBeanPostProcessor:createEventListener
+    AnnotationEventListenerBeanPostProcessor->EventBus:subscribe
+    EventBus->EventBus:addEventListener
+end
+SpringApplication -> XiEventFrameworkInitializer:run
+XiEventFrameworkInitializer -> RegisterService:initJob
+RegisterService -> XiEventControlCenter:saveJobGroup
+RegisterService -> XiEventControlCenter:saveEventHandleRecoverJobInfo
+RegisterService -> XiEventControlCenter:saveEventFailedWarnJobInfo
+@enduml

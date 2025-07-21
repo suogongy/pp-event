@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true">
+
+    <springProperty scope="context" name="app.name" source="spring.application.name"/>
+
+    <springProperty scop="context" name="eros_log_enable" source="eros.log.enable" defaultValue="true"/>
+
+    <springProfile name="dev">
+        <springProperty scop="context" name="eros_log_path" source="eros.log.path" defaultValue="/var/logs/${app.name}"/>
+    </springProfile>
+
+    <springProfile name="test | fat">
+        <springProperty scop="context" name="eros_log_path" source="eros.log.path" defaultValue="/logs/${app.name}"/>
+    </springProfile>
+
+    <springProfile name="uat | pro">
+        <springProperty scop="context" name="eros_log_path" source="eros.log.path" defaultValue="/var/log/${app.name}"/>
+    </springProfile>
+
+    <springProperty scop="context" name="eros_log_fileName" source="eros.log.fileName" defaultValue="${app.name}"/>
+
+
+    <!-- 默认的log pattern-->
+    <!-- 格式化输出: %d: 日期; %-5level: 级别从左显示5个字符宽度;[%sid]:traceId;${app.name}:应用名; %thread: 线程名; %logger: 类名; %M: 方法名; %line: 行号; %msg: 日志消息; %n: 换行符 -->
+    <property name="default_log_pattern"
+              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%X{custom}] [%-5level][%sid] [${app.name}] [%thread] [%logger{50}] [%M] [%line] - %msg%n"/>
+
+
+    <!--支持自定义控制台pattern-->
+    <springProperty scop="context" name="console_log_pattern" source="eros.log.consolePattern"
+                    defaultValue="${default_log_pattern}"/>
+
+    <!--支持自定义文件pattern-->
+    <springProperty scop="context" name="file_log_pattern" source="eros.log.filePattern"
+                    defaultValue="${default_log_pattern}"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="org.ppj.xdcs.log.logback.v1.SpanIdPatternLayout">
+            <Pattern>${console_log_pattern}</Pattern>
+        </layout>
+    </appender>
+
+
+    <springProperty scop="context" name="queueSize" source="eros.log.async.queueSize" defaultValue="256"/>
+
+    <springProperty scop="context" name="discardingThreshold" source="eros.log.async.discardingThreshold"
+                    defaultValue="0"/>
+
+    <springProperty scop="context" name="neverBlock" source="eros.log.async.neverBlock" defaultValue="true"/>
+
+    <springProfile name="dev | uat | pro| fat">
+        <appender name="FILE"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${eros_log_path}/${eros_log_fileName}.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${eros_log_path}/${eros_log_fileName}.%d{yyyy-MM-dd}.%i</fileNamePattern>
+                <maxHistory>7</maxHistory>
+                <maxFileSize>10MB</maxFileSize>
+            </rollingPolicy>
+            <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                <layout class="org.ppj.xdcs.log.logback.v1.SpanIdPatternLayout">
+                    <Pattern>${file_log_pattern}</Pattern>
+                </layout>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <root level="INFO">
+        <if condition='property("eros_log_enable").equals("true")'>
+            <then>
+                <appender-ref ref="CONSOLE"/>
+                <springProfile name="dev | uat | pro| fat">
+                    <appender-ref ref="FILE"/>
+                </springProfile>
+            </then>
+        </if>
+    </root>
+</configuration>

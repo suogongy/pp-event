@@ -1,0 +1,100 @@
+@startuml
+
+class EventMessage<T> {
+    T payload
+    Object getPayload()
+    Class getPayloadType()
+}
+
+class MethodInvocation{
+     Class targetClass
+     String methodName
+     transient Method method
+     Class parameterType
+     Object args
+
+     void proceed()
+}
+
+class PPEvent{
+    long id
+    String eventNo
+    int status
+    int retriedCount
+    String methodInvocationContent
+    MethodInvocation methodInvocation
+    Date createTime
+    Date updateTime
+    int version
+}
+
+PPEvent --> MethodInvocation
+
+class EventBus {
+    Set<EventListener> listeners
+
+    subscribe(EventListener eventListener)
+    publish(EventMessage eventMessage)
+}
+
+EventBus --> EventListener
+
+abstract class BaseModel {
+    apply(Object eventPayload)
+}
+
+BaseModel --> EventBus
+EventMessage -- EventBus
+
+class EventListener {
+    Object target
+    List<Method> methods
+}
+
+class AsyncMethodInvoker{
+    getInstance()
+    invoke(methodInvocation,ppEventId)
+}
+
+EventBus --> AsyncMethodInvoker
+
+class AsyncDisruptor{
+    ensureStart(Method method)
+    tryPublish(asyncEventTranslator)
+    stop(timeout,timeUnit)
+}
+
+AsyncMethodInvoker --> AsyncDisruptor
+
+class EventMethodProcessor{
+    PPEventMapper PPEventMapper
+    handle(PPEvent PPEvent)
+}
+
+class EventHandleRecoverJob{
+    recover()
+}
+
+EventHandleRecoverJob --> EventMethodProcessor
+
+class FailedEventWarnJob{
+    warn()
+}
+
+class PPEventFrameworkInitializer{
+    RegisterService registerService
+    run()
+}
+
+class RegisterService{
+    JobRegisterApi jobRegisterApi
+    initJob()
+    saveJobGroup()
+    saveEventHandleRecoverJobInfo()
+    saveEventFailedWarnJobInfo()
+}
+
+PPEventFrameworkInitializer --> RegisterService
+
+
+@enduml

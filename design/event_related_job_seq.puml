@@ -1,0 +1,41 @@
+@startuml
+title 重试和失败告警处理
+FrameworkInitializer -> RegisterService:initJob
+RegisterService -> PPEventControlCenter: saveJobGroup
+RegisterService -> PPEventControlCenter: saveEventHandleRecoverJobInfo
+RegisterService -> PPEventControlCenter: saveEventFailedWarnJobInfo
+PPEventControlCenter --> EventHandleRecoverJob: recover
+activate PPEventControlCenter
+EventHandleRecoverJob -> PPEventMapper: findTryingPPEvents
+    loop PPEvent
+        EventHandleRecoverJob -> EventMethodProcessor:handle
+        alt failedAfterMaxTry
+            EventMethodProcessor -> EventMethodProcessor:markPPEventAsFailed
+            EventMethodProcessor -> PPEventMapper:updateEvent
+        else
+            EventMethodProcessor -> EventMethodProcessor:markPPEventAsDoing
+            EventMethodProcessor -> PPEventMapper:updateEvent
+            alt updateSuccess
+                EventMethodProcessor -> EventMethodProcessor:invokeEventHandler
+                EventMethodProcessor -> PPEventMapper:deleteEvent
+            else
+                EventMethodProcessor -> EventMethodProcessor:logForTip
+            end
+        end
+    end
+deactivate PPEventControlCenter
+PPEventControlCenter --> FailedEventWarnJob:warn
+activate PPEventControlCenter
+FailedEventWarnJob -> PPEventMapper: findFailedPPEvents
+    loop PPEvent
+        FailedEventWarnJob -> FailedEventWarnJob:doWarn
+    end
+deactivate PPEventControlCenter
+PPEventControlCenter --> FailedEventHandler:reset
+activate PPEventControlCenter
+FailedEventHandler -> PPEventMapper: findFailedPPEvents
+    loop PPEvent
+        FailedEventHandler -> FailedEventHandler:resetEvent
+    end
+deactivate PPEventControlCenter
+@enduml

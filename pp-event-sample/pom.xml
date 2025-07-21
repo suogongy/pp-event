@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>pp-event</artifactId>
+        <groupId>org.ppj.dal</groupId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>pp-event-sample</artifactId>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-xdcs</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-football</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-mainstay</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-danube</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.eros</groupId>
+            <artifactId>eros-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.dal</groupId>
+            <artifactId>pp-event-sample-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ppj.dal</groupId>
+            <artifactId>pp-event-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>pp-event-sample</finalName>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
