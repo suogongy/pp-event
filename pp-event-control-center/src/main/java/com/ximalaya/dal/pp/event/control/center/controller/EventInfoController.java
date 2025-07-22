@@ -100,7 +100,7 @@ public class EventInfoController {
 
         XxlJobGroup xxlJobGroup = xxlJobGroupDao.load(jobGroup);
 
-        return xiEventService.failedEventReset(xxlJobGroup.getAppname(), eventId);
+        return PPEventService.failedEventReset(xxlJobGroup.getAppname(), eventId);
     }
 
     @PutMapping("/event/reset/all")
@@ -109,7 +109,7 @@ public class EventInfoController {
 
         XxlJobGroup xxlJobGroup = xxlJobGroupDao.load(jobGroup);
 
-        return xiEventService.resetAll(xxlJobGroup.getAppname());
+        return PPEventService.resetAll(xxlJobGroup.getAppname());
     }
 
     @PutMapping("/failedevent/remove")
@@ -118,6 +118,6 @@ public class EventInfoController {
 
         XxlJobGroup xxlJobGroup = xxlJobGroupDao.load(jobGroup);
 
-        return xiEventService.failedEventRemove(xxlJobGroup.getAppname(), eventId);
+        return PPEventService.failedEventRemove(xxlJobGroup.getAppname(), eventId);
     }
 }

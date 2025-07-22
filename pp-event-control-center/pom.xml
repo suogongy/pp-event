@@ -5,9 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.ppj.business</groupId>
-        <artifactId>business-parent-eros</artifactId>
-        <version>1.1.1.0.RELEASE</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>${spring.boot.version}</version>
+        <relativePath/>
     </parent>
 
     <groupId>org.ppj.dal</groupId>
@@ -19,6 +20,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <spring.boot.version>2.7.14</spring.boot.version>
     </properties>
 
     <dependencies>
@@ -47,64 +49,6 @@
             <version>1.2.17</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-football</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-mainstay</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>log4j</artifactId>
-                    <groupId>log4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-xdcs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.ppj.ops</groupId>
-            <artifactId>cas-spring-boot-starter</artifactId>
-            <version>2.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>log4j</artifactId>
-                    <groupId>log4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

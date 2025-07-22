@@ -2,24 +2,26 @@
 title 核心业务处理流程
 Caller -> BusinessSystem: doBusiness
 BusinessSystem -> BusinessSystem: writeBusinessEntity
-BusinessSystem ->PPEventFrameWork: applyEvent
-XiEventFrameWork -> EventBus: publishEventMessage
+BusinessSystem ->PPEventFrameWork:
+
+
+PPEventFrameWork -> EventBus: publishEventMessage
 EventBus -> EventBus: buildMethodInvocations
-EventBus -> EventBus: buildXiEvents
+EventBus -> EventBus: buildPPEvents
 EventBus -> PPEventMapper:insert
 EventBus -> AsyncMethodInvoker:invoke
 AsyncMethodInvoker -> AsyncDisruptor:ensureStart
 AsyncDisruptor -> AsyncDisruptor:tryPublish
 
-XiEventControlCenter--> EventHandleRecoverJob: triggerRecoverJob
-activatePPEventControlCenter
+PPEventControlCenter--> EventHandleRecoverJob: triggerRecoverJob
+activate PPEventControlCenter
 EventHandleRecoverJob-> PPEventMapper: findNeedRetryEvents
 EventHandleRecoverJob-> EventMethodProcessor: handle
-deactivatePPEventControlCenter
+deactivate PPEventControlCenter
 
-XiEventControlCenter--> FailedEventWarnJob: triggerFailedEventWarnJob
-activatePPEventControlCenter
+PPEventControlCenter--> FailedEventWarnJob: triggerFailedEventWarnJob
+activate PPEventControlCenter
 FailedEventWarnJob-> PPEventMapper: findFailedEvents
 FailedEventWarnJob-> FailedEventWarnJob: warnByDingding
-deactivatePPEventControlCenter
+deactivate PPEventControlCenter
 @enduml
