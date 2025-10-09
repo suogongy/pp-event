@@ -26,7 +26,7 @@ public class AsyncWorkHandler implements WorkHandler<AsyncEvent> {
         threadContextSynchronizationManager.executeWithBindThreadContext(() -> {
 
             PPEventHandler ppEventHandler = FactoryBuilder.factoryOf(PPEventHandler.class).getInstance();
-            ppEventHandler.handleEvent(event.getPPEventId());
+            ppEventHandler.handleEvent(event.getPpEventId());
         });
 
 

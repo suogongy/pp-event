@@ -8,12 +8,12 @@ public class AsyncEvent {
     public static final AsyncEventFactory FACTORY = new AsyncEventFactory();
 
     private MethodInvocation methodInvocation;
-    private Long PPEventId;
+    private Long ppEventId;
     private String threadContext;
 
     public void reset(MethodInvocation methodInvocation,Long PPEventId,String threadContext) {
         this.methodInvocation = methodInvocation;
-        this.PPEventId = PPEventId;
+        this.ppEventId = PPEventId;
         this.threadContext = threadContext;
     }
 
@@ -21,8 +21,8 @@ public class AsyncEvent {
         return methodInvocation;
     }
 
-    public Long getPPEventId() {
-        return PPEventId;
+    public Long getPpEventId() {
+        return ppEventId;
     }
     public String getThreadContext() {
         return threadContext;
@@ -30,7 +30,7 @@ public class AsyncEvent {
 
     public void clear() {
         methodInvocation = null;
-        PPEventId = null;
+        ppEventId = null;
         threadContext = null;
     }
 }

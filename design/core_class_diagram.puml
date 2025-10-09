@@ -43,7 +43,7 @@ abstract class BaseModel {
     apply(Object eventPayload)
 }
 
-BaseModel --> EventBus
+BaseModel -- EventBus
 EventMessage -- EventBus
 
 class EventListener {
@@ -68,7 +68,7 @@ AsyncMethodInvoker --> AsyncDisruptor
 
 class EventMethodProcessor{
     PPEventMapper PPEventMapper
-    handle(PPEvent PPEvent)
+    handle(PPEvent ppEvent)
 }
 
 class EventHandleRecoverJob{

@@ -12,6 +12,8 @@ public interface JobRegisterApi {
     @POST
     Call<Object> saveJobGroup(@Url String url,@Body XxlJobGroup xxlJobGroup);
 
+
+    
     @POST
     Call<Object> registerJobInfo(@Url String url,@Body XxlJobInfo xxlJobInfo);
 }

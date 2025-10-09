@@ -2,7 +2,7 @@
 title 核心业务处理流程
 Caller -> BusinessSystem: doBusiness
 BusinessSystem -> BusinessSystem: writeBusinessEntity
-BusinessSystem ->PPEventFrameWork:
+BusinessSystem ->PPEventFrameWork: applyEvent
 
 
 PPEventFrameWork -> EventBus: publishEventMessage
