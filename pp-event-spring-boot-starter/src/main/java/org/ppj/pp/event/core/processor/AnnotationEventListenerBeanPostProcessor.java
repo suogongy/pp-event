@@ -14,10 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.util.ReflectionUtils;
-
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AnnotationEventListenerBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware, ApplicationListener<ContextClosedEvent> {
 
@@ -62,9 +59,12 @@ public class AnnotationEventListenerBeanPostProcessor implements BeanPostProcess
     }
 
     private boolean hasEventHandlerMethod(Class<?> beanClass) {
-        final AtomicBoolean result = new AtomicBoolean(false);
-        ReflectionUtils.doWithMethods(beanClass, new HasEventHandlerAnnotationMethodCallback(result));
-        return result.get();
+        for (Method method : beanClass.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(EventHandler.class)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -83,21 +83,5 @@ public class AnnotationEventListenerBeanPostProcessor implements BeanPostProcess
 
         logger.info("pp-event-framework shutdowned");
 
-    }
-
-    private class HasEventHandlerAnnotationMethodCallback implements ReflectionUtils.MethodCallback {
-
-        private final AtomicBoolean result;
-
-        public HasEventHandlerAnnotationMethodCallback(AtomicBoolean result) {
-            this.result = result;
-        }
-
-        @Override
-        public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
-            if (method.isAnnotationPresent(EventHandler.class)) {
-                result.set(true);
-            }
-        }
     }
 }
