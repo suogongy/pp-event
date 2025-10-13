@@ -2,7 +2,6 @@ package org.ppj.pp.event.core.async;
 
 import com.lmax.disruptor.WorkHandler;
 import org.ppj.pp.event.core.eventhandle.PPEventHandler;
-import org.ppj.pp.event.core.threadcontext.ThreadContextSynchronizationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +26,6 @@ public class AsyncWorkHandler implements WorkHandler<AsyncEvent> {
     }
 
     private void doWorkHandle(AsyncEvent event) {
-
-        ThreadContextSynchronizationManager threadContextSynchronizationManager = new ThreadContextSynchronizationManager(event.getThreadContext());
-
-        threadContextSynchronizationManager.executeWithBindThreadContext(() -> {
-            ppEventHandler.handleEvent(event.getPpEventId());
-        });
-
-
+        ppEventHandler.handleEvent(event.getPpEventId());
     }
 }

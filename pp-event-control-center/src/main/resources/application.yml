@@ -14,11 +14,6 @@ spring:
     charset: UTF-8
     request-context-attribute: request
     settings.number_format: 0.##########
-eros:
-  football:
-    app:
-      id: 11927
-      name: pp-event
 management:
   health:
     mail:

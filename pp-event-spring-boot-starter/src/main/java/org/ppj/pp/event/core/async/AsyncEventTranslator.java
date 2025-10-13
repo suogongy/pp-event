@@ -7,17 +7,15 @@ public class AsyncEventTranslator implements EventTranslator<AsyncEvent>, AutoCl
 
     private MethodInvocation methodInvocation;
     private Long ppEventId;
-    private String threadContext;
 
-    public AsyncEventTranslator(MethodInvocation methodInvocation,Long PPEventId,String threadContext) {
+    public AsyncEventTranslator(MethodInvocation methodInvocation,Long PPEventId) {
         this.methodInvocation = methodInvocation;
         this.ppEventId = PPEventId;
-        this.threadContext = threadContext;
     }
 
     @Override
     public void translateTo(AsyncEvent event, long sequence) {
-        event.reset(methodInvocation, ppEventId,threadContext);
+        event.reset(methodInvocation, ppEventId);
     }
 
     public MethodInvocation getMethodInvocation() {
@@ -32,6 +30,5 @@ public class AsyncEventTranslator implements EventTranslator<AsyncEvent>, AutoCl
     public void close() throws Exception {
         this.methodInvocation = null;
         this.ppEventId = null;
-        this.threadContext = null;
     }
 }

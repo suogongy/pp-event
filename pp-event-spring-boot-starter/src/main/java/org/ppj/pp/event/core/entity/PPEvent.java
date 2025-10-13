@@ -15,7 +15,6 @@ import java.util.UUID;
 @Setter
 public class PPEvent implements Serializable {
 
-    private static final String THREAD_CONTEXT_KEY = "threadContext";
     private static final long serialVersionUID = 6069959414023532600L;
 
     private long id;

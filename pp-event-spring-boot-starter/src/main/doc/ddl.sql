@@ -1,4 +1,4 @@
-CREATE TABLE `XIMA_EVENT`
+CREATE TABLE `PP_EVENT`
 (
     `id`                        bigint(11) unsigned NOT NULL AUTO_INCREMENT,
     `event_no`                  varchar(50)   DEFAULT NULL,

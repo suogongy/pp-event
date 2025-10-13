@@ -8,11 +8,10 @@ pp-event是一个基于Spring Boot、MyBatis和XXL-Job的异步事件框架，�
 
 ## Project Structure
 
-The project consists of 4 main modules:
+The project consists of 3 main modules:
 
 - **pp-event-spring-boot-starter**: 核心框架模块，提供事件处理、异步执行、重试机制等核心功能
 - **pp-event-sample**: 示例应用，展示如何使用pp-event框架
-- **pp-event-sample-api**: 示例应用的API定义，包含Thrift接口
 - **pp-event-control-center**: 调度中心，基于XXL-Job的任务调度管理界面
 
 ## Build Commands

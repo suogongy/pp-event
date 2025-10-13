@@ -4,7 +4,6 @@ import org.ppj.pp.event.core.configure.PPEventProperties;
 import org.ppj.pp.event.core.entity.PPEvent;
 import org.ppj.pp.event.core.http.DingDingAlertApi;
 import org.ppj.pp.event.core.mapper.PPEventMapper;
-import org.ppj.pp.event.core.threadcontext.ThreadContextSynchronizationManager;
 import org.ppj.pp.event.core.utils.HttpUtil;
 import org.ppj.pp.event.core.xxljob.context.XxlJobHelper;
 import org.ppj.pp.event.core.xxljob.handler.annotation.XxlJob;
@@ -33,7 +32,7 @@ public class FailedEventWarnJob {
     private PPEventMapper ppEventMapper;
 
     @Resource
-    private DingDingAlertApi xdcsDingDingAlertApi;
+    private DingDingAlertApi dingDingAlertApi;
 
     @Value("${spring.application.name}")
     private String applicationName;

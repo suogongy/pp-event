@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>${spring.boot.version}</version>
+        <version>2.7.14</version>
         <relativePath/>
     </parent>
 
@@ -48,19 +48,12 @@
 
     <modules>
         <module>pp-event-spring-boot-starter</module>
-        <module>pp-event-sample-api</module>
         <module>pp-event-sample</module>
         <module>pp-event-control-center</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.ppj.dal</groupId>
-                <artifactId>pp-event-sample-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>

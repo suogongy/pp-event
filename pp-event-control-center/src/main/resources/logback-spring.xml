@@ -3,126 +3,66 @@
 
     <springProperty scope="context" name="app.name" source="spring.application.name"/>
 
-    <springProperty scop="context" name="eros_log_enable" source="eros.log.enable" defaultValue="true"/>
+    <!-- 日志格式配置 -->
+    <property name="log_pattern"
+              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [${app.name}] [%thread] [%logger{50}] - %msg%n"/>
 
-    <springProperty scop="context" name="eros_log_enableDevFile" source="eros.log.enableDevFile" defaultValue="false"/>
+    <!-- 控制台输出配置 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log_pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
 
+    <!-- 开发环境配置 -->
     <springProfile name="dev">
-        <springProperty scop="context" name="eros_log_path" source="eros.log.path" defaultValue="/var/logs/${app.name}"/>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
     </springProfile>
 
+    <!-- 测试环境配置 -->
     <springProfile name="test | fat">
-        <springProperty scop="context" name="eros_log_path" source="eros.log.path" defaultValue="/logs/${app.name}"/>
-    </springProfile>
-
-    <springProfile name="uat | pro">
-        <springProperty scop="context" name="eros_log_path" source="eros.log.path" defaultValue="/var/log/${app.name}"/>
-    </springProfile>
-
-    <springProperty scop="context" name="eros_log_fileName" source="eros.log.fileName" defaultValue="${app.name}"/>
-
-
-    <!-- 默认的log pattern-->
-    <!-- 格式化输出: %d: 日期; %-5level: 级别从左显示5个字符宽度;[%sid]:traceId;${app.name}:应用名; %thread: 线程名; %logger: 类名; %M: 方法名; %line: 行号; %msg: 日志消息; %n: 换行符 -->
-    <property name="default_log_pattern"
-              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level][%sid] [${app.name}] [%thread] [%logger{50}] [%M] [%line] - %msg%n"/>
-
-
-    <!--支持自定义控制台pattern-->
-    <springProperty scop="context" name="console_log_pattern" source="eros.log.consolePattern"
-                    defaultValue="${default_log_pattern}"/>
-
-    <!--支持自定义文件pattern-->
-    <springProperty scop="context" name="file_log_pattern" source="eros.log.filePattern"
-                    defaultValue="${default_log_pattern}"/>
-
-    <springProperty scop="context" name="queueSize" source="eros.log.async.queueSize" defaultValue="256"/>
-
-    <springProperty scop="context" name="discardingThreshold" source="eros.log.async.discardingThreshold"
-                    defaultValue="0"/>
-
-    <springProperty scop="context" name="neverBlock" source="eros.log.async.neverBlock" defaultValue="true"/>
-
-    <springProfile name="dev">
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <layout class="org.ppj.xdcs.log.logback.v1.SpanIdPatternLayout">
-                <Pattern>${console_log_pattern}</Pattern>
-            </layout>
-        </appender>
-        <if condition='property("eros_log_enableDevFile").equals("true")'>
-            <then>
-                <appender name="FILE"
-                          class="ch.qos.logback.core.rolling.RollingFileAppender">
-                    <File>${eros_log_path}/${eros_log_fileName}.log</File>
-                    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                        <fileNamePattern>${eros_log_path}/${eros_log_fileName}.%d{yyyy-MM-dd}.%i</fileNamePattern>
-                        <maxHistory>7</maxHistory>
-                        <maxFileSize>10MB</maxFileSize>
-                    </rollingPolicy>
-                    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-                        <layout class="org.ppj.xdcs.log.logback.v1.SpanIdPatternLayout">
-                            <Pattern>${file_log_pattern}</Pattern>
-                        </layout>
-                    </encoder>
-                </appender>
-            </then>
-        </if>
-    </springProfile>
-
-    <springProfile name="test | fat">
-        <appender name="FILE"
-                  class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <File>${eros_log_path}/${eros_log_fileName}.log</File>
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>/logs/${app.name}.log</File>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${eros_log_path}/${eros_log_fileName}.%d{yyyy-MM-dd}.%i</fileNamePattern>
+                <fileNamePattern>/logs/${app.name}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxHistory>7</maxHistory>
                 <maxFileSize>10MB</maxFileSize>
+                <totalSizeCap>1GB</totalSizeCap>
             </rollingPolicy>
-            <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-                <layout class="org.ppj.xdcs.log.logback.v1.SpanIdPatternLayout">
-                    <Pattern>${file_log_pattern}</Pattern>
-                </layout>
+            <encoder>
+                <pattern>${log_pattern}</pattern>
+                <charset>UTF-8</charset>
             </encoder>
         </appender>
+
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
     </springProfile>
 
+    <!-- 生产环境配置 -->
     <springProfile name="uat | pro">
-        <appender name="FILE"
-                  class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <File>${eros_log_path}/${eros_log_fileName}.log</File>
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>/var/log/${app.name}.log</File>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${eros_log_path}/${eros_log_fileName}.%d{yyyy-MM-dd}.%i</fileNamePattern>
-                <maxHistory>7</maxHistory>
-                <maxFileSize>10MB</maxFileSize>
+                <fileNamePattern>/var/log/${app.name}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <maxFileSize>100MB</maxFileSize>
+                <totalSizeCap>10GB</totalSizeCap>
             </rollingPolicy>
-            <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-                <layout class="org.ppj.xdcs.log.logback.v1.SpanIdPatternLayout">
-                    <Pattern>${file_log_pattern}</Pattern>
-                </layout>
+            <encoder>
+                <pattern>${log_pattern}</pattern>
+                <charset>UTF-8</charset>
             </encoder>
         </appender>
+
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
     </springProfile>
 
-    <root level="INFO">
-        <if condition='property("eros_log_enable").equals("true")'>
-            <then>
-                <springProfile name="dev">
-                    <if condition='property("eros_log_enableDevFile").equals("true")'>
-                        <then>
-                            <appender-ref ref="FILE"/>
-                        </then>
-                    </if>
-                    <appender-ref ref="CONSOLE"/>
-                </springProfile>
-
-                <springProfile name="test | fat">
-                    <appender-ref ref="FILE"/>
-                </springProfile>
-
-                <springProfile name="uat | pro">
-                    <appender-ref ref="FILE"/>
-                </springProfile>
-            </then>
-        </if>
-    </root>
 </configuration>

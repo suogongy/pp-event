@@ -2,7 +2,6 @@ package org.ppj.pp.event.core.async;
 
 import com.alibaba.fastjson.JSON;
 import org.ppj.pp.event.core.eventhandle.MethodInvocation;
-import org.ppj.pp.event.core.threadcontext.ThreadContextSynchronizationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +38,7 @@ public class AsyncMethodInvoker {
 
         try (AsyncEventTranslator eventTranslator = new AsyncEventTranslator(
                 methodInvocation,
-                PPEventId,
-                ThreadContextSynchronizationManager.getThreadContextSynchronization().getCurrentThreadContext())
+                PPEventId)
         ) {
 
             if (!AsyncDisruptor.tryPublish(eventTranslator)) {

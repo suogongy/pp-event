@@ -14,55 +14,34 @@
 
     <dependencies>
 
+
+      
         <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-xdcs</artifactId>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>3.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-football</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-mainstay</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-web</artifactId>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.3.1</version>
         </dependency>
 
+        
         <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-mybatis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-danube</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ppj.eros</groupId>
-            <artifactId>eros-starter-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.ppj.dal</groupId>
-            <artifactId>pp-event-sample-api</artifactId>
         </dependency>
 
         <dependency>

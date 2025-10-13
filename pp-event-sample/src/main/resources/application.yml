@@ -6,17 +6,15 @@ spring:
 #server:
 #  servlet:
 #    context-path: /pp-event-sample
-eros:
-  football:
-    app:
-      id: 11927
-      name: pp-event
-mainstay:
+
+dubbo:
   application:
     name: pp-event-sample
-    owners:
-      - name: rudy.yang
-        email: haiyuan1832@gmail.om
-  server:
-    pp-event-sample:
-      port: 9527
+  protocol:
+    name: dubbo
+    port: 20880
+  registry:
+    address: N/A
+  provider:
+    group: pp-event-sample
+    version: 1.0.0

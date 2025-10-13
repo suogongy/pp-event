@@ -33,7 +33,6 @@ build/
 .flattened-pom.xml
 /.idea/
 
-**./@xdcs.log@/
 **/.DS_Store
 *.log
 *.out

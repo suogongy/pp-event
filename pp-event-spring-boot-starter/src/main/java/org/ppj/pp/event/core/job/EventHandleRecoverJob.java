@@ -5,7 +5,6 @@ import org.ppj.pp.event.core.entity.PPEvent;
 import org.ppj.pp.event.core.enums.PPEventStatus;
 import org.ppj.pp.event.core.mapper.PPEventMapper;
 import org.ppj.pp.event.core.processor.EventMethodProcessor;
-import org.ppj.pp.event.core.threadcontext.ThreadContextSynchronizationManager;
 import org.ppj.pp.event.core.xxljob.context.XxlJobHelper;
 import org.ppj.pp.event.core.xxljob.handler.annotation.XxlJob;
 import org.slf4j.Logger;
@@ -44,8 +43,7 @@ public class EventHandleRecoverJob {
 
         ensureExecutorInitialized(threadCount);
 
-        CompletableFuture.runAsync(() -> doRecoverEvent(false));
-        CompletableFuture.runAsync(() -> doRecoverEvent(true));
+        CompletableFuture.runAsync(() -> doRecoverEvent());
 
         XxlJobHelper.log("app: {}, jobHandler: {}", applicationName, "eventHandleRecoverJobHandler");
     }
@@ -60,12 +58,8 @@ public class EventHandleRecoverJob {
         }
     }
 
-    private void doRecoverEvent(boolean isPeakRecover) {
-        LOGGER.info("pp-event retry job called! isPeakRecover: {}", isPeakRecover);
-
-        ThreadContextSynchronizationManager threadContextSynchronizationManager = new ThreadContextSynchronizationManager(isPeakRecover);
-
-        threadContextSynchronizationManager.executeWithBindThreadContext(() -> {
+    private void doRecoverEvent() {
+        LOGGER.info("pp-event retry job called! ");
 
             long preId = 0l;
             long currentTimeMillis = System.currentTimeMillis();
@@ -75,7 +69,7 @@ public class EventHandleRecoverJob {
                 List<PPEvent> ppEvents = ppEventMapper.findByStatusAndPreIdAndCreateTimeThresholdWithPaging(PPEventStatus.TRYING.getId(), preId, createTimeThreshold, PPEventProperties.getPageSize());
 
                 if (!CollectionUtils.isEmpty(ppEvents)) {
-                    concurrentRecover(ppEvents, isPeakRecover);
+                    concurrentRecover(ppEvents);
                 }
 
                 if (!Objects.equals(ppEvents.size(), PPEventProperties.getPageSize())) {
@@ -83,13 +77,12 @@ public class EventHandleRecoverJob {
                 }
                 preId = ppEvents.get(ppEvents.size() - 1).getId();
             }
-        });
     }
 
-    private void concurrentRecover(List<PPEvent> ppEvents, boolean isPeakRecover) {
+    private void concurrentRecover(List<PPEvent> ppEvents) {
 
         List<RecoverTask> recoverTasks = ppEvents.stream()
-                .map(ppEvent -> new RecoverTask(ppEvent, isPeakRecover))
+                .map(ppEvent -> new RecoverTask(ppEvent))
                 .collect(Collectors.toList());
 
         try {
@@ -106,21 +99,16 @@ public class EventHandleRecoverJob {
     class RecoverTask implements Callable<Void> {
 
         private PPEvent ppEvent;
-        private boolean isPeakRelatedTask;
 
-        public RecoverTask(PPEvent ppEvent, boolean isPeakRelatedTask) {
+        public RecoverTask(PPEvent ppEvent) {
             this.ppEvent = ppEvent;
-            this.isPeakRelatedTask = isPeakRelatedTask;
         }
 
         @Override
         public Void call() throws Exception {
 
-            ThreadContextSynchronizationManager threadContextSynchronizationManager = new ThreadContextSynchronizationManager(isPeakRelatedTask);
+            eventMethodProcessor.handle(ppEvent);
 
-            threadContextSynchronizationManager.executeWithBindThreadContext(() -> {
-                eventMethodProcessor.handle(ppEvent);
-            });
             return null;
         }
     }

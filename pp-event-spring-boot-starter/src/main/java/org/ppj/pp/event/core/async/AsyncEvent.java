@@ -9,12 +9,10 @@ public class AsyncEvent {
 
     private MethodInvocation methodInvocation;
     private Long ppEventId;
-    private String threadContext;
 
-    public void reset(MethodInvocation methodInvocation,Long PPEventId,String threadContext) {
+    public void reset(MethodInvocation methodInvocation,Long PPEventId) {
         this.methodInvocation = methodInvocation;
         this.ppEventId = PPEventId;
-        this.threadContext = threadContext;
     }
 
     public MethodInvocation getMethodInvocation() {
@@ -24,13 +22,9 @@ public class AsyncEvent {
     public Long getPpEventId() {
         return ppEventId;
     }
-    public String getThreadContext() {
-        return threadContext;
-    }
 
     public void clear() {
         methodInvocation = null;
         ppEventId = null;
-        threadContext = null;
     }
 }
