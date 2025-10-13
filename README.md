@@ -583,12 +583,12 @@ TransactionSynchronizationManager.registerSynchronization(new TransactionSynchro
 
 ### 准备工作
 - maven引入`pp-event-spring-boot-starter`
-   最新版本（2022-12-26）
+
 ```
 <dependency>
     <groupId>org.ppj.dal</groupId>
     <artifactId>pp-event-spring-boot-starter</artifactId>
-    <version>2.0.12.RELEASE</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -652,7 +652,7 @@ PPEvent:
 <dependency>
     <groupId>org.ppj.dal</groupId>
     <artifactId>pp-event-spring-boot-starter</artifactId>
-    <version>2.0.12.RELEASE</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
