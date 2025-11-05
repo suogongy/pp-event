@@ -4,6 +4,7 @@ import com.github.lianjiatech.retrofit.spring.boot.annotation.RetrofitScan;
 import org.ppj.pp.event.core.controller.PPEventController;
 import org.ppj.pp.event.core.controller.XxlJobClientController;
 import org.ppj.pp.event.core.eventhandle.PPEventHandler;
+import org.ppj.pp.event.core.factory.SpringBeanFactory;
 import org.ppj.pp.event.core.initializer.PPEventFrameworkInitializer;
 import org.ppj.pp.event.core.job.EventHandleRecoverJob;
 import org.ppj.pp.event.core.job.FailedEventWarnJob;
@@ -53,7 +54,12 @@ public class PPEventAutoConfiguration {
         return annotationEventListenerBeanPostProcessor;
     }
 
-    
+    @Bean
+    public SpringBeanFactory mySpring() {
+        SpringBeanFactory springBeanFactory = new SpringBeanFactory();
+        return springBeanFactory;
+    }
+
     @Bean
     public EventMethodProcessor eventMethodProcessor() {
         EventMethodProcessor eventMethodProcessor = new EventMethodProcessor();

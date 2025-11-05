@@ -5,22 +5,19 @@ import com.google.common.collect.Lists;
 import org.ppj.pp.event.core.async.AsyncMethodInvoker;
 import org.ppj.pp.event.core.entity.EventMessage;
 import org.ppj.pp.event.core.entity.PPEvent;
+import org.ppj.pp.event.core.factory.FactoryBuilder;
 import org.ppj.pp.event.core.mapper.PPEventMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ppj.pp.event.core.eventhandle.EventListener;
 import org.ppj.pp.event.core.eventhandle.MethodInvocation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@Component
 public class EventBus {
 
     public static final EventBus INSTANCE = new EventBus();
@@ -28,10 +25,9 @@ public class EventBus {
     private static final Logger logger = LoggerFactory.getLogger(EventBus.class.getSimpleName());
     private final Set<EventListener> listeners = new CopyOnWriteArraySet<EventListener>();
 
-    @Resource
-    private PPEventMapper ppEventMapper;
-
     public void publish(EventMessage eventMessage) {
+
+        PPEventMapper ppEventMapper = FactoryBuilder.factoryOf(PPEventMapper.class).getInstance();
 
         List<PPEvent> ppEvents = Lists.newArrayList();
 

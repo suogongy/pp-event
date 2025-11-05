@@ -2,17 +2,11 @@ package org.ppj.pp.event.core.async;
 
 import com.lmax.disruptor.WorkHandler;
 import org.ppj.pp.event.core.eventhandle.PPEventHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.ppj.pp.event.core.factory.FactoryBuilder;
+import org.ppj.pp.event.core.threadcontext.ThreadContextSynchronizationManager;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-
-@Component
 public class AsyncWorkHandler implements WorkHandler<AsyncEvent> {
-
-    @Resource
-    private PPEventHandler ppEventHandler;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -26,6 +20,7 @@ public class AsyncWorkHandler implements WorkHandler<AsyncEvent> {
     }
 
     private void doWorkHandle(AsyncEvent event) {
+        PPEventHandler ppEventHandler = FactoryBuilder.factoryOf(PPEventHandler.class).getInstance();
         ppEventHandler.handleEvent(event.getPpEventId());
     }
 }
