@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn:*)",
+      "mcp__filesystem__list_directory",
+      "Bash(find:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
